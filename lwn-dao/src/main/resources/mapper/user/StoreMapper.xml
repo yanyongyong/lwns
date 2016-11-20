@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nuesoft.lwn.dao.mapper.user.StoreMapper" >
+  <resultMap id="BaseResultMap" type="Store" >
+    <id column="store_id" property="storeId" jdbcType="INTEGER" />
+    <result column="store_name" property="storeName" jdbcType="VARCHAR" />
+    <result column="store_address" property="storeAddress" jdbcType="VARCHAR" />
+    <result column="shop_manager" property="shopManager" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+
+
+  <sql id="Base_Column_List" >
+    store_id, store_name, store_address, shop_manager, state, remark
+  </sql>
+
+  <!--查询全部-->
+  <select id="selectAllStore" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from lwn_store
+  </select>
+
+  <!--根据id删除-->
+  <delete id="deleteByStoreId" parameterType="java.lang.Integer" >
+    delete from lwn_store
+    where store_id = #{storeId,jdbcType=INTEGER}
+  </delete>
+
+  <!--增加店面-->
+  <insert id="insertStore" parameterType="Store" >
+    insert into lwn_store (store_id, store_name, store_address,
+      shop_manager, state, remark
+      )
+    values (#{storeId,jdbcType=INTEGER}, #{storeName,jdbcType=VARCHAR}, #{storeAddress,jdbcType=VARCHAR}, 
+      #{shopManager,jdbcType=VARCHAR}, "open", #{remark,jdbcType=VARCHAR}
+      )
+  </insert>
+
+  <!--根据id更新-->
+  <update id="updateStoreId" parameterType="Store" >
+    update lwn_store
+    <set >
+      <if test="storeName != null" >
+        store_name = #{storeName,jdbcType=VARCHAR},
+      </if>
+      <if test="storeAddress != null" >
+        store_address = #{storeAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="shopManager != null" >
+        shop_manager = #{shopManager,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where store_id = #{storeId,jdbcType=INTEGER}
+  </update>
+
+  <!--模糊查询-->
+  <select id="dimSelectStore" resultMap="BaseResultMap" parameterType="Store">
+    select <include refid="Base_Column_List"/>
+    from lwn_store
+    where
+    shop_manager like "%"#{shopManager,jdbcType=VARCHAR}"%"
+  </select>
+
+
+
+</mapper>

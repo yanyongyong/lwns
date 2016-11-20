@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding" defaultCharsetForPropertiesFiles="UTF-8">
+    <file url="file://$PROJECT_DIR$/lwn-dao/src/main/java/com/nuesoft/lwn/dao/mapper/user/UserMapper.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lwn-service/src/main/java/com/nuesoft/lwn/service/user/UserService.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/lwn-service/src/main/java/com/nuesoft/lwn/service/user/impl/UserServiceImpl.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lwn-web/src/main/java/com/nuesoft/lwn/controller/user/UserController.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lwn-web/src/main/webapp/jsp/goods/cashier.jsp" charset="UTF-8" />
+    <file url="PROJECT" charset="UTF-8" />
+  </component>
+</project>

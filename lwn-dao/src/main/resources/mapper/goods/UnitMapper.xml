@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nuesoft.lwn.dao.mapper.goods.UnitMapper" >
+  <resultMap id="BaseResultMap" type="Unit" >
+    <id column="unit_id" property="unitId" jdbcType="INTEGER" />
+    <result column="goods_name" property="goodsName" jdbcType="VARCHAR" />
+    <result column="unit_name" property="unitName" jdbcType="VARCHAR" />
+    <result column="goods_number" property="goodsNumber" jdbcType="INTEGER" />
+    <result column="store" property="store" jdbcType="INTEGER" />
+    <result column="invertory" property="invertory" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    unit_id, goods_name, unit_name, remark,goods_number,store,invertory
+  </sql>
+
+  <!--查询全部-->
+  <select id="selectAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from lwn_goods_unit
+  </select>
+
+  <!--根据Id查询全部-->
+  <select id="selectById" resultMap="BaseResultMap" parameterType="Unit">
+    select
+    <include refid="Base_Column_List" />
+    from lwn_goods_unit
+    where store = #{store,jdbcType=VARCHAR}
+  </select>
+
+  <!--根据id删除-->
+  <delete id="deleteById" parameterType="java.lang.Integer" >
+    delete from lwn_goods_unit
+    where unit_id = #{unitId,jdbcType=INTEGER}
+  </delete>
+
+  <!--添加-->
+  <insert id="insert" parameterType="Unit" >
+    insert into lwn_goods_unit (goods_name, unit_name,goods_number,store,invertory,
+      remark)
+    values (#{goodsName,jdbcType=VARCHAR}, #{unitName,jdbcType=VARCHAR},
+      #{goodsNumber,jdbcType=INTEGER},#{store,jdbcType=VARCHAR},
+      #{invertory,jdbcType=INTEGER},#{remark,jdbcType=VARCHAR})
+  </insert>
+
+  <!--更新-->
+  <update id="updateById" parameterType="Unit" >
+    update lwn_goods_unit
+    <set>
+      <if test="goodsName != null" >
+        goods_name = #{goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="unitName != null" >
+        unit_name = #{unitName,jdbcType=VARCHAR},
+      </if>
+      <if test="invertory != null" >
+        invertory = #{invertory,jdbcType=INTEGER},
+      </if>
+      <if test="goodsNumber != null" >
+        goods_number = #{goodsNumber,jdbcType=INTEGER},
+      </if>
+      <if test="store != null" >
+        store = #{store,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR}
+      </if>
+    </set>
+    where unit_id = #{unitId,jdbcType=INTEGER}
+  </update>
+
+  <!--更新-->
+  <update id="updateBygoodsNumber" parameterType="Unit" >
+    update lwn_goods_unit
+    set invertory = invertory-1
+    where goods_number = #{goodsNumber,jdbcType=INTEGER}
+  </update>
+
+  <!--返回最大id-->
+  <select id="selectMaxId" resultType="java.lang.Integer">
+    select max(unit_id) from lwn_goods_unit
+  </select>
+
+</mapper>

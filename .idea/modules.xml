@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/lwn.iml" filepath="$PROJECT_DIR$/lwn.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lwn-common/lwn-common.iml" filepath="$PROJECT_DIR$/lwn-common/lwn-common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lwn-dao/lwn-dao.iml" filepath="$PROJECT_DIR$/lwn-dao/lwn-dao.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lwn-service/lwn-service.iml" filepath="$PROJECT_DIR$/lwn-service/lwn-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lwn-web/lwn-web.iml" filepath="$PROJECT_DIR$/lwn-web/lwn-web.iml" />
+    </modules>
+  </component>
+</project>

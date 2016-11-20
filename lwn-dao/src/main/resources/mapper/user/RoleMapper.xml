@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nuesoft.lwn.dao.mapper.user.RoleMapper" >
+  <resultMap id="BaseResultMap" type="Role" >
+    <id column="role_id" property="roleId" jdbcType="INTEGER" />
+    <result column="role_name" property="roleName" jdbcType="VARCHAR" />
+    <result column="role_priv" property="rolePriv" jdbcType="VARCHAR" />
+    <result column="create_by" property="createBy" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="VARCHAR" />
+    <result column="update_by" property="updateBy" jdbcType="VARCHAR" />
+    <result column="update_time" property="updateTime" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    role_id, role_name, role_priv,create_by, create_time, update_by, update_time
+  </sql>
+
+  <!--添加角色-->
+  <insert id="insertRole" parameterType="Role"
+          useGeneratedKeys="true" keyProperty="roleId">
+    insert into lwn_role (role_id,role_name, role_priv,create_by, create_time,
+    update_by, update_time)
+    values
+    (#{roleId,jdbcType=INTEGER}, #{roleName,jdbcType=VARCHAR}, #{rolePriv,jdbcType=VARCHAR},
+    #{createBy,jdbcType=VARCHAR},#{createTime,jdbcType=VARCHAR}, #{updateBy,jdbcType=VARCHAR},
+    #{updateTime,jdbcType=VARCHAR}
+    )
+  </insert>
+
+  <!--根据id删除角色-->
+  <delete id="deleteByRoleId" parameterType="java.lang.Integer" >
+    delete from lwn_role
+    where role_id = #{roleId,jdbcType=INTEGER}
+  </delete>
+
+  <!--模糊查询-->
+  <select id="dimSelectRole" resultMap="BaseResultMap" parameterType="Role">
+    select <include refid="Base_Column_List"/>
+    from lwn_role
+    where
+    role_name like "%"#{roleName,jdbcType=VARCHAR}"%"
+  </select>
+
+  <!--根据姓名更新-->
+  <update id="UpdateByName" parameterType="Role" >
+    update lwn_role
+    set
+    role_priv = #{rolePriv,jdbcType=VARCHAR}
+    where
+    role_name = #{roleName,jdbcType=VARCHAR}
+  </update>
+
+  <!--分页查询-->
+  <select id="selectAllRole" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from lwn_role
+  </select>
+
+  <!--根据id编辑角色-->
+  <update id="editByRoleId" parameterType="Role" >
+    update lwn_role
+    set
+    role_name = #{roleName,jdbcType=VARCHAR},
+    create_by = #{createBy,jdbcType=VARCHAR},
+    update_time = #{updateTime,jdbcType=VARCHAR}
+    where
+    role_id = #{roleId,jdbcType=INTEGER}
+
+
+  </update>
+
+
+</mapper>

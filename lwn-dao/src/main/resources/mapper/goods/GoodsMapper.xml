@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nuesoft.lwn.dao.mapper.goods.GoodsMapper" >
+  <resultMap id="BaseResultMap" type="Goods" >
+    <id column="goods_id" property="goodsId" jdbcType="INTEGER" />
+    <result column="goods_type" property="goodsType" jdbcType="VARCHAR" />
+    <result column="goods_name" property="goodsName" jdbcType="VARCHAR" />
+    <result column="image" property="image" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="DOUBLE" />
+    <result column="number" property="number" jdbcType="INTEGER" />
+    <result column="producer" property="producer" jdbcType="VARCHAR" />
+    <result column="producels" property="producels" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <collection property="unit" javaType="Unit" ofType="Unit">
+      <result column="unit_name" property="unitName" jdbcType="VARCHAR" />
+      <result column="invertory" property="invertory" jdbcType="VARCHAR" />
+    </collection>
+
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    goods_id, goods_type, goods_name, image, price, number, producer, producels, create_time, 
+    remark
+  </sql>
+
+  <!--根据名称查询-->
+  <select id="selectByName" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select
+    goods_id, goods_type,goods_name, price
+    from lwn_good
+    where goods_name = #{goodsName,jdbcType=VARCHAR}
+  </select>
+
+  <!--分页查询-->
+  <select id="select" resultMap="BaseResultMap">
+    select goods.goods_id, goods_type, image,price,goods.remark,
+    producer,producels,create_time,goods.goods_name,unit_name,
+    unit.invertory
+    from lwn_good goods
+    join mid_goods_unit mgoods on goods.goods_id = mgoods.goods_id
+    join lwn_goods_unit unit on mgoods.unit_id = unit.unit_id
+  </select>
+
+  <!--根据id查询-->
+  <select id="selectById" resultMap="BaseResultMap" parameterType="Goods">
+    select
+     goods_id, goods_type,goods_name, price
+    from lwn_good
+    where goods_name = #{goodsName,jdbcType=VARCHAR}
+  </select>
+
+  <!--根据Id删除商品-->
+  <delete id="deleteBygoodId" parameterType="java.lang.Integer" >
+    delete goods,mgu,unit from lwn_good goods
+    join mid_goods_unit mgu on goods.goods_id = mgu.goods_id
+    join lwn_goods_unit unit on mgu.unit_id = unit.unit_id where goods.goods_id = #{goodsId,jdbcType=INTEGER}
+  </delete>
+
+  <!--添加商品-->
+  <insert id="insert" parameterType="Goods" >
+    insert into lwn_good (goods_type, goods_name,
+      image, price, number,
+      producer, producels, create_time)
+    values (#{goodsType,jdbcType=VARCHAR}, #{goodsName,jdbcType=VARCHAR},
+      #{image,jdbcType=VARCHAR}, #{price,jdbcType=DOUBLE}, #{number,jdbcType=INTEGER},
+      #{producer,jdbcType=VARCHAR}, #{producels,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR})
+  </insert>
+
+  <!--根据id更新商品-->
+  <update id="updateBygoodId" parameterType="Goods" >
+    update lwn_good
+    <set >
+      <if test="goodsType != null" >
+        goods_type = #{goodsType,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsName != null" >
+        goods_name = #{goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="image != null" >
+        image = #{image,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=DOUBLE},
+      </if>
+      <if test="number != null" >
+        number = #{number,jdbcType=INTEGER},
+      </if>
+      <if test="producer != null" >
+        producer = #{producer,jdbcType=VARCHAR},
+      </if>
+      <if test="producels != null" >
+        producels = #{producels,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR}
+      </if>
+    </set>
+    where goods_id = #{goodsId,jdbcType=INTEGER}
+  </update>
+
+  <!--返回最大id-->
+  <select id="selectMaxId" resultType="java.lang.Integer">
+    select max(goods_id) from lwn_good
+  </select>
+
+</mapper>

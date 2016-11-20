@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nuesoft.lwn.dao.mapper.goods.InventoryMapper" >
+  <resultMap id="BaseResultMap" type="Inventory" >
+    <id column="inventory_id" property="inventoryId" jdbcType="INTEGER" />
+    <result column="store" property="store" jdbcType="VARCHAR" />
+    <result column="inventory_name" property="inventoryName" jdbcType="VARCHAR" />
+    <result column="goods_type" property="goodsType" jdbcType="VARCHAR" />
+    <result column="goods_name" property="goodsName" jdbcType="VARCHAR" />
+    <result column="goods_inventory" property="goodsInventory" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    inventory_id, store, inventory_name, goods_type, goods_name, goods_inventory, remark
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from lwn_inventory
+    where inventory_id = #{inventoryId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from lwn_inventory
+    where inventory_id = #{inventoryId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="Inventory" >
+    insert into lwn_inventory (inventory_id, store, inventory_name, 
+      goods_type, goods_name, goods_inventory, 
+      remark)
+    values (#{inventoryId,jdbcType=INTEGER}, #{store,jdbcType=VARCHAR}, #{inventoryName,jdbcType=VARCHAR}, 
+      #{goodsType,jdbcType=VARCHAR}, #{goodsName,jdbcType=VARCHAR}, #{goodsInventory,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="Inventory" >
+    insert into lwn_inventory
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="inventoryId != null" >
+        inventory_id,
+      </if>
+      <if test="store != null" >
+        store,
+      </if>
+      <if test="inventoryName != null" >
+        inventory_name,
+      </if>
+      <if test="goodsType != null" >
+        goods_type,
+      </if>
+      <if test="goodsName != null" >
+        goods_name,
+      </if>
+      <if test="goodsInventory != null" >
+        goods_inventory,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="inventoryId != null" >
+        #{inventoryId,jdbcType=INTEGER},
+      </if>
+      <if test="store != null" >
+        #{store,jdbcType=VARCHAR},
+      </if>
+      <if test="inventoryName != null" >
+        #{inventoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsType != null" >
+        #{goodsType,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsName != null" >
+        #{goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsInventory != null" >
+        #{goodsInventory,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="Inventory" >
+    update lwn_inventory
+    <set >
+      <if test="store != null" >
+        store = #{store,jdbcType=VARCHAR},
+      </if>
+      <if test="inventoryName != null" >
+        inventory_name = #{inventoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsType != null" >
+        goods_type = #{goodsType,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsName != null" >
+        goods_name = #{goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsInventory != null" >
+        goods_inventory = #{goodsInventory,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where inventory_id = #{inventoryId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="Inventory" >
+    update lwn_inventory
+    set store = #{store,jdbcType=VARCHAR},
+      inventory_name = #{inventoryName,jdbcType=VARCHAR},
+      goods_type = #{goodsType,jdbcType=VARCHAR},
+      goods_name = #{goodsName,jdbcType=VARCHAR},
+      goods_inventory = #{goodsInventory,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR}
+    where inventory_id = #{inventoryId,jdbcType=INTEGER}
+  </update>
+</mapper>

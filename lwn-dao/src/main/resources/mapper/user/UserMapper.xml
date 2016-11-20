@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+
+  <mapper namespace="com.nuesoft.lwn.dao.mapper.user.UserMapper" >
+
+  <!--数据库表字段和实体类的映射-->
+  <resultMap id="BaseResultMap" type="User" >
+    <id column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="user_role" property="userRole" jdbcType="VARCHAR" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="phone_num" property="phoneNum" jdbcType="VARCHAR" />
+    <result column="last_update" property="lastUpdate" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+
+
+  <sql id="Base_Column_List" >
+    user_id, user_role,user_name, password, phone_num, last_update, remark
+  </sql>
+
+  <!--根据用户名查询-->
+  <select id="selectUser" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    user_name,password
+    from lwn_user
+    where user_name = #{userName,jdbcType=INTEGER}
+  </select>
+
+  <!--添加用户-->
+  <insert id="insert" parameterType="User"
+          useGeneratedKeys="true" keyProperty="userId">
+    insert into lwn_user
+    (user_id, user_role,user_name, password,phone_num, last_update, remark)
+    values
+    ( #{userId,jdbcType=INTEGER}, #{userRole,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR},
+      #{password,jdbcType=VARCHAR},#{phoneNum,jdbcType=VARCHAR}, #{lastUpdate,jdbcType=VARCHAR},
+      #{remark,jdbcType=VARCHAR}
+    )
+  </insert>
+
+  <!--修改密码-->
+  <update id="updatePasswordByUserName" parameterType="User" >
+    update lwn_user
+    set
+    password = #{password,jdbcType=VARCHAR}
+    where
+    user_name = #{userName,jdbcType=VARCHAR}
+  </update>
+
+  <!--根据id编辑用户-->
+  <update id="updatePasswordByUserId" parameterType="User" >
+    update lwn_user
+    set
+    password = #{password,jdbcType=VARCHAR},phone_num = #{phoneNum,jdbcType=VARCHAR},
+    last_update = #{lastUpdate,jdbcType=VARCHAR},user_name = #{userName,jdbcType=VARCHAR},
+    remark = #{remark,jdbcType=VARCHAR}
+    where
+    user_id = #{userId,jdbcType=INTEGER}
+  </update>
+
+  <!--分页查询-->
+  <select id="selectAll" resultMap="BaseResultMap">
+    select
+    user_id, user_role,user_name, password, phone_num, last_update, remark
+    from lwn_user
+  </select>
+
+  <!--店长分页查询-->
+  <select id="selectAllUser" resultMap="BaseResultMap">
+    select
+    user_id, user_name, password, phone_num, last_update, remark
+    from lwn_user
+    where user_role = "店长"
+  </select>
+
+  <!--操作员分页查询-->
+  <select id="selectAllOperator" resultMap="BaseResultMap">
+    select
+    user_id, user_name, password, phone_num, last_update, remark
+    from lwn_user
+    where user_role = "操作员"
+  </select>
+
+  <!--导购员分页查询-->
+  <select id="selectAllGuide" resultMap="BaseResultMap">
+    select
+    user_id, user_name, password, phone_num, last_update, remark
+    from lwn_user
+    where user_role = "导购员"
+  </select>
+
+
+  <!--根据id删除用户-->
+  <delete id="deleteByUserId" parameterType="java.lang.Integer" >
+    delete from lwn_user
+    where user_id = #{userId,jdbcType=INTEGER}
+  </delete>
+
+  <!--店长模糊查询-->
+  <select id="dimSelect" resultMap="BaseResultMap" parameterType="User">
+    select <include refid="Base_Column_List"/>
+    from lwn_user
+    where
+    user_name like "%"#{userName,jdbcType=VARCHAR}"%" and
+    user_role = #{userRole,jdbcType=VARCHAR}
+  </select>
+
+  <!--店长模糊查询-->
+  <select id="dimSelectAll" resultMap="BaseResultMap" parameterType="User">
+    select <include refid="Base_Column_List"/>
+    from lwn_user
+    where
+    user_name like "%"#{userName,jdbcType=VARCHAR}"%" and
+    user_role like "%"#{userRole,jdbcType=VARCHAR}"%"
+  </select>
+
+  <!-- <insert id="insertSelective" parameterType="User" >
+     insert into lwn_user
+     <trim prefix="(" suffix=")" suffixOverrides="," >
+       <if test="userId != null" >
+         user_id,
+       </if>
+       <if test="userName != null" >
+         user_name,
+       </if>
+       <if test="password != null" >
+         password,
+       </if>
+       <if test="phoneNum != null" >
+         phone_num,
+       </if>
+       <if test="lastUpdate != null" >
+         last_update,
+       </if>
+       <if test="remark != null" >
+         remark,
+       </if>
+     </trim>
+     <trim prefix="values (" suffix=")" suffixOverrides="," >
+       <if test="userId != null" >
+         #{userId,jdbcType=INTEGER},
+       </if>
+       <if test="userName != null" >
+         #{userName,jdbcType=VARCHAR},
+       </if>
+       <if test="password != null" >
+         #{password,jdbcType=VARCHAR},
+       </if>
+       <if test="phoneNum != null" >
+         #{phoneNum,jdbcType=VARCHAR},
+       </if>
+       <if test="lastUpdate != null" >
+         #{lastUpdate,jdbcType=VARCHAR},
+       </if>
+       <if test="remark != null" >
+         #{remark,jdbcType=VARCHAR},
+       </if>
+     </trim>
+   </insert>
+   <update id="updateByPrimaryKeySelective" parameterType="User" >
+     update lwn_user
+     <set >
+       <if test="userName != null" >
+         user_name = #{userName,jdbcType=VARCHAR},
+       </if>
+       <if test="password != null" >
+         password = #{password,jdbcType=VARCHAR},
+       </if>
+       <if test="phoneNum != null" >
+         phone_num = #{phoneNum,jdbcType=VARCHAR},
+       </if>
+       <if test="lastUpdate != null" >
+         last_update = #{lastUpdate,jdbcType=VARCHAR},
+       </if>
+       <if test="remark != null" >
+         remark = #{remark,jdbcType=VARCHAR},
+       </if>
+     </set>
+     where user_id = #{userId,jdbcType=INTEGER}
+   </update>-->
+</mapper>

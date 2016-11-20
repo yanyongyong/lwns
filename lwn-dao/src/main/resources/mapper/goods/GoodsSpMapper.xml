@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nuesoft.lwn.dao.mapper.goods.GoodsSpMapper" >
+  <resultMap id="BaseResultMap" type="GoodsSp" >
+    <id column="sp_id" property="spId" jdbcType="INTEGER" />
+    <result column="sp_name" property="spName" jdbcType="VARCHAR" />
+    <result column="sp_goods" property="spGoods" jdbcType="VARCHAR" />
+    <result column="sp_category" property="spCategory" jdbcType="VARCHAR" />
+    <result column="sp_store" property="spStore" jdbcType="VARCHAR" />
+    <result column="sp_price" property="spPrice" jdbcType="DOUBLE" />
+    <result column="sp_time" property="spTime" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+
+
+  <sql id="Base_Column_List" >
+    sp_id, sp_name, sp_goods, sp_category, sp_store, sp_price, sp_time, remark
+  </sql>
+
+  <!--查询全部-->
+  <select id="selectAll" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from lwn_sp
+  </select>
+
+  <!--查询id全部-->
+  <select id="selectById" resultMap="BaseResultMap" parameterType="GoodsSp" >
+    select
+    <include refid="Base_Column_List" />
+    from lwn_sp
+    where sp_id = #{spId,jdbcType=INTEGER}
+  </select>
+
+  <!--根据Id删除-->
+  <delete id="deleteById" parameterType="java.lang.Integer" >
+    delete from lwn_sp
+    where sp_id = #{spId,jdbcType=INTEGER}
+  </delete>
+
+  <!--增加特价商品-->
+  <insert id="insert" parameterType="GoodsSp" >
+    insert into lwn_sp (sp_id, sp_name, sp_goods, 
+      sp_category, sp_store, sp_price, 
+      sp_time, remark)
+    values (#{spId,jdbcType=INTEGER}, #{spName,jdbcType=VARCHAR}, #{spGoods,jdbcType=VARCHAR}, 
+      #{spCategory,jdbcType=VARCHAR}, #{spStore,jdbcType=VARCHAR}, #{spPrice,jdbcType=DOUBLE}, 
+      #{spTime,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR})
+  </insert>
+
+  <!--根据Id更新-->
+  <update id="updateById" parameterType="GoodsSp" >
+    update lwn_sp
+    <set >
+      <if test="spName != null" >
+        sp_name = #{spName,jdbcType=VARCHAR},
+      </if>
+      <if test="spGoods != null" >
+        sp_goods = #{spGoods,jdbcType=VARCHAR},
+      </if>
+      <if test="spCategory != null" >
+        sp_category = #{spCategory,jdbcType=VARCHAR},
+      </if>
+      <if test="spStore != null" >
+        sp_store = #{spStore,jdbcType=VARCHAR},
+      </if>
+      <if test="spPrice != null" >
+        sp_price = #{spPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="spTime != null" >
+        sp_time = #{spTime,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where sp_id = #{spId,jdbcType=INTEGER}
+  </update>
+
+
+</mapper>

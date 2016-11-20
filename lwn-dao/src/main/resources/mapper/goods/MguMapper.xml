@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nuesoft.lwn.dao.mapper.goods.MguMapper" >
+  <resultMap id="BaseResultMap" type="Mgu" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="goods_id" property="goodsId" jdbcType="INTEGER" />
+    <result column="unit_id" property="unitId" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, goods_id, unit_id
+  </sql>
+
+  <insert id="insert" parameterType="Mgu" >
+    insert into mid_goods_unit (goods_id, unit_id
+      )
+    values (#{goodsId,jdbcType=INTEGER}, #{unitId,jdbcType=INTEGER}
+      )
+  </insert>
+  
+</mapper>

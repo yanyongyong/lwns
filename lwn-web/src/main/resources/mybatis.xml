@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+
+    <!--设置别名-->
+    <typeAliases>
+        <typeAlias type="com.nuesoft.lwn.common.entity.user.User" alias="User"/>
+        <typeAlias type="com.nuesoft.lwn.common.entity.user.Role" alias="Role"/>
+        <typeAlias type="com.nuesoft.lwn.common.entity.user.Priv" alias="Priv"/>
+        <typeAlias type="com.nuesoft.lwn.common.entity.user.Store" alias="Store"/>
+        <typeAlias type="com.nuesoft.lwn.common.entity.goods.GoodsType" alias="GoodsType"/>
+        <typeAlias type="com.nuesoft.lwn.common.entity.goods.Goods" alias="Goods"/>
+        <typeAlias type="com.nuesoft.lwn.common.entity.goods.GoodsSp" alias="GoodsSp"/>
+        <typeAlias type="com.nuesoft.lwn.common.entity.goods.SpCategory" alias="SpCategory"/>
+        <typeAlias type="com.nuesoft.lwn.common.entity.goods.Unit" alias="Unit"/>
+        <typeAlias type="com.nuesoft.lwn.common.entity.goods.Mgu" alias="Mgu"/>
+        <typeAlias type="com.nuesoft.lwn.common.entity.goods.Inventory" alias="Inventory"/>
+        <typeAlias type="com.nuesoft.lwn.common.entity.goods.Card" alias="Card"/>
+        <typeAlias type="com.nuesoft.lwn.common.entity.member.Grade" alias="Grade"/>
+        <typeAlias type="com.nuesoft.lwn.common.entity.member.Member" alias="Member"/>
+        <typeAlias type="com.nuesoft.lwn.common.entity.member.Mmg" alias="Mmg"/>
+    </typeAliases>
+
+    <!-- 配置分页插件 -->
+    <plugins>
+        <plugin interceptor="com.github.pagehelper.PageHelper">
+            <!-- 设置数据库类型 Oracle,Mysql,MariaDB,SQLite,Hsqldb,PostgreSQL六种数据库-->
+            <property name="dialect" value="mysql"/>
+        </plugin>
+    </plugins>
+
+
+</configuration>

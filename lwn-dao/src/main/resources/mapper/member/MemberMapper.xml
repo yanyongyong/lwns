@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nuesoft.lwn.dao.mapper.member.MemberMapper" >
+  <resultMap id="MemberResultMap" type="Member" >
+    <id column="member_id" property="memberId" jdbcType="INTEGER" />
+    <result column="member_name" property="memberName" jdbcType="VARCHAR" />
+    <result column="member_phone" property="memberPhone" jdbcType="VARCHAR" />
+    <result column="member_address" property="memberAddress" jdbcType="VARCHAR" />
+    <result column="created_store" property="createdStore" jdbcType="VARCHAR" />
+    <result column="member_integral" property="memberIntegral" jdbcType="INTEGER" />
+    <result column="recharge" property="recharge" jdbcType="INTEGER" />
+    <result column="member_balance" property="memberBalance" jdbcType="DOUBLE" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <collection property="grade" javaType="Grade" ofType="Grade">
+      <result column="grade_name" property="gradeName" jdbcType="VARCHAR" />
+      <result column="integral_discount" property="integralDiscount" jdbcType="DOUBLE" />
+    </collection>
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    member_id, member_name, member_phone, member_address, created_store, member_integral,
+    member_balance, remark,grade_name,integral_discount,recharge
+  </sql>
+
+  <!--查询全部会员信息-->
+  <select id="selectAllMember" resultMap="MemberResultMap">
+    select 
+    member.member_id, member_name, member_phone, member_address, created_store, member_integral,
+    member_balance, member.remark,grade_name,integral_discount
+    from lwn_member member
+    join mid_member_grade mmg on member.member_id = mmg.member_id
+    join lwn_member_grade grade on mmg.grade_id = grade.grade_id
+  </select>
+
+  <!--添加会员信息-->
+  <insert id="insertMember" parameterType="Member" >
+    insert into lwn_member
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="memberId != null" >
+        member_id,
+      </if>
+      <if test="memberName != null" >
+        member_name,
+      </if>
+      <if test="memberPhone != null" >
+        member_phone,
+      </if>
+      <if test="memberAddress != null" >
+        member_address,
+      </if>
+      <if test="createdStore != null" >
+        created_store,
+      </if>
+      <if test="memberIntegral != null" >
+        member_integral,
+      </if>
+      <if test="memberBalance != null" >
+        member_balance,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="memberId != null" >
+        #{memberId,jdbcType=INTEGER},
+      </if>
+      <if test="memberName != null" >
+        #{memberName,jdbcType=VARCHAR},
+      </if>
+      <if test="memberPhone != null" >
+        #{memberPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="memberAddress != null" >
+        #{memberAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="createdStore != null" >
+        #{createdStore,jdbcType=VARCHAR},
+      </if>
+      <if test="memberIntegral != null" >
+        #{memberIntegral,jdbcType=INTEGER},
+      </if>
+      <if test="memberBalance != null" >
+        #{memberBalance,jdbcType=DOUBLE},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <!--删除会员信息-->
+  <delete id="deleteByMemberId" parameterType="java.lang.Integer" >
+    delete from lwn_member
+    where member_id = #{memberId,jdbcType=INTEGER}
+  </delete>
+
+  <!--修改会员信息-->
+  <update id="updateMemberById" parameterType="Member" >
+    update lwn_member
+    <set >
+      <if test="memberName != null" >
+        member_name = #{memberName,jdbcType=VARCHAR},
+      </if>
+      <if test="memberPhone != null" >
+        member_phone = #{memberPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="memberAddress != null" >
+        member_address = #{memberAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="createdStore != null" >
+        created_store = #{createdStore,jdbcType=VARCHAR},
+      </if>
+      <if test="memberIntegral != null" >
+        member_integral = #{memberIntegral,jdbcType=INTEGER},
+      </if>
+      <if test="memberBalance != null" >
+        member_balance = #{memberBalance,jdbcType=DOUBLE},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where member_id = #{memberId,jdbcType=INTEGER}
+  </update>
+
+  <!--通过会员名称模糊查询-->
+  <select id="dimSelectMember" parameterType="java.lang.String" resultMap="MemberResultMap">
+    select
+    member.member_id, member_name, member_phone, member_address, created_store, member_integral,
+    member_balance, member.remark,grade_name,integral_discount
+    from lwn_member member
+    join mid_member_grade mmg on member.member_id = mmg.member_id
+    join lwn_member_grade grade on mmg.grade_id = grade.grade_id
+    where  member_name like "%"#{memberName,jdbcType=VARCHAR}"%"
+  </select>
+
+  <!--非分页查询-->
+  <select id="searchMember" resultMap="MemberResultMap">
+      select member.member_id,member_name,grade_name,integral_discount,member_balance,member.member_integral
+        from lwn_member member
+        join mid_member_grade mmg on member.member_id = mmg.member_id
+        join lwn_member_grade grade on mmg.grade_id = grade.grade_id
+  </select>
+
+  <!--未丢失会员查询-->
+  <select id="searchMemberOnLine" resultMap="MemberResultMap">
+    select member.member_id,member_name,grade_name,integral_discount,member_balance,member.member_integral
+    from lwn_member member
+    join mid_member_grade mmg on member.member_id = mmg.member_id
+    join lwn_member_grade grade on mmg.grade_id = grade.grade_id
+    where member.remark = "在线"
+  </select>
+
+  <!--根据id查询会员信息-->
+  <select id="searchName" resultMap="MemberResultMap" parameterType="java.lang.Integer">
+      select member_integral,member_balance
+      from lwn_member
+      where member_id = #{memberId,jdbcType=INTEGER}
+  </select>
+
+  <!--查询id最大值-->
+  <select id="selectMaxId" resultType="java.lang.Integer">
+    select max(member_id) from lwn_member
+  </select>
+
+  <!--增加会员-->
+  <insert id="insert" parameterType="Member" >
+    insert into lwn_member (member_id, member_name, member_phone, 
+      member_address, created_store, member_integral, 
+      member_balance, remark, remark2)
+    values (#{memberId,jdbcType=INTEGER}, #{memberName,jdbcType=VARCHAR}, #{memberPhone,jdbcType=VARCHAR},
+      #{memberAddress,jdbcType=VARCHAR}, #{createdStore,jdbcType=VARCHAR}, #{memberIntegral,jdbcType=INTEGER}, 
+      #{memberBalance,jdbcType=DOUBLE}, #{remark,jdbcType=VARCHAR}, #{remark2,jdbcType=VARCHAR})
+  </insert>
+
+  <!--根据id更新会员信息-->
+  <update id="updateByPrimaryKey" parameterType="Member" >
+    update lwn_member
+    set member_name = #{memberName,jdbcType=VARCHAR},
+      member_phone = #{memberPhone,jdbcType=VARCHAR},
+      member_address = #{memberAddress,jdbcType=VARCHAR},
+      created_store = #{createdStore,jdbcType=VARCHAR},
+      member_integral = #{memberIntegral,jdbcType=INTEGER},
+      member_balance = #{memberBalance,jdbcType=DOUBLE},
+      remark = #{remark,jdbcType=VARCHAR}
+    where member_id = #{memberId,jdbcType=INTEGER}
+  </update>
+
+</mapper>

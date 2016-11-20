@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nuesoft.lwn.dao.mapper.member.GradeMapper" >
+  
+  <resultMap id="BaseResultMap" type="Grade" >
+    <id column="grade_id" property="gradeId" jdbcType="INTEGER" />
+    <result column="grade_name" property="gradeName" jdbcType="VARCHAR" />
+    <result column="integral_nadir" property="integralNadir" jdbcType="INTEGER" />
+    <result column="integral_apex" property="integralApex" jdbcType="INTEGER" />
+    <result column="integral_discount" property="integralDiscount" jdbcType="DOUBLE" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    grade_id, grade_name, integral_nadir, integral_apex, integral_discount, remark
+  </sql>
+
+  <!--分页查询-->
+  <select id="select" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from lwn_member_grade
+  </select>
+
+  <!--根据id删除等级-->
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from lwn_member_grade
+    where grade_id = #{gradeId,jdbcType=INTEGER}
+  </delete>
+
+  <!--添加会员等级-->
+  <insert id="insert" parameterType="Grade" >
+    insert into lwn_member_grade (grade_id, grade_name, integral_nadir, 
+      integral_apex, integral_discount, remark
+      )
+    values (#{gradeId,jdbcType=INTEGER}, #{gradeName,jdbcType=VARCHAR}, #{integralNadir,jdbcType=INTEGER}, 
+      #{integralApex,jdbcType=INTEGER}, #{integralDiscount,jdbcType=DOUBLE}, #{remark,jdbcType=VARCHAR}
+      )
+  </insert>
+
+  <!--返回id最大值-->
+  <select id="selectMaxId" resultType="java.lang.Integer">
+    select max(grade_id) from lwn_member_grade
+  </select>
+
+  <!--根据等级id更新等级信息-->
+  <update id="updateById" parameterType="Grade" >
+    update lwn_member_grade
+    <set >
+      <if test="gradeName != null" >
+        grade_name = #{gradeName,jdbcType=VARCHAR},
+      </if>
+      <if test="integralNadir != null" >
+        integral_nadir = #{integralNadir,jdbcType=INTEGER},
+      </if>
+      <if test="integralApex != null" >
+        integral_apex = #{integralApex,jdbcType=INTEGER},
+      </if>
+      <if test="integralDiscount != null" >
+        integral_discount = #{integralDiscount,jdbcType=DOUBLE},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where grade_id = #{gradeId,jdbcType=INTEGER}
+  </update>
+
+</mapper>

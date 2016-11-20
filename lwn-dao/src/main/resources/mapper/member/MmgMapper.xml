@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nuesoft.lwn.dao.mapper.member.MmgMapper" >
+  <resultMap id="BaseResultMap" type="Mmg" >
+    <id column="member_grade_id" property="memberGradeId" jdbcType="INTEGER" />
+    <result column="member_id" property="memberId" jdbcType="INTEGER" />
+    <result column="grade_id" property="gradeId" jdbcType="INTEGER" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    member_grade_id, member_id, grade_id
+  </sql>
+
+  <!--插入会员和等级一一对应-->
+  <insert id="insert" parameterType="Mmg" >
+    insert into mid_member_grade
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="memberGradeId != null" >
+        member_grade_id,
+      </if>
+      <if test="memberId != null" >
+        member_id,
+      </if>
+      <if test="gradeId != null" >
+        grade_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="memberGradeId != null" >
+        #{memberGradeId,jdbcType=INTEGER},
+      </if>
+      <if test="memberId != null" >
+        #{memberId,jdbcType=INTEGER},
+      </if>
+      <if test="gradeId != null" >
+        #{gradeId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+
+  <!--根据会员id更新-->
+  <update id="updateByMemberId" parameterType="Mmg" >
+    update mid_member_grade
+    <set >
+      <if test="memberId != null" >
+        member_id = #{memberId,jdbcType=INTEGER},
+      </if>
+      <if test="gradeId != null" >
+        grade_id = #{gradeId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where member_id = #{memberId,jdbcType=INTEGER}
+  </update>
+
+</mapper>

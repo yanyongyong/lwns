@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nuesoft.lwn.dao.mapper.goods.CardMapper" >
+  <resultMap id="BaseResultMap" type="Card" >
+    <id column="cart_id" property="cartId" jdbcType="INTEGER" />
+    <result column="goods_id" property="goodsId" jdbcType="INTEGER" />
+    <result column="goods_name" property="goodsName" jdbcType="VARCHAR" />
+    <result column="goods_type" property="goodsType" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="DOUBLE" />
+    <result column="goods_number" property="goodsNumber" jdbcType="INTEGER" />
+    <result column="inventory" property="inventory" jdbcType="INTEGER" />
+    <result column="menber" property="menber" jdbcType="VARCHAR" />
+    <result column="discount" property="discount" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="remark2" property="remark2" jdbcType="VARCHAR" />
+    <result column="pay_time" property="payTime" jdbcType="VARCHAR" />
+    <result column="mop" property="mop" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    cart_id, goods_id, goods_type,goods_name, price,goods_number,
+    inventory, menber, discount, remark,remark2,pay_time,mop
+  </sql>
+
+  <!--查询全部-->
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from lwn_card
+  </select>
+
+  <!--根据会员名查询全部-->
+  <select id="selectById" resultMap="BaseResultMap" parameterType="Card">
+  select
+  <include refid="Base_Column_List" />
+  from lwn_card
+  where menber = #{menber,jdbcType=VARCHAR}
+</select>
+
+ <!--根据订单号查询-->
+  <select id="selectByOrder" resultMap="BaseResultMap" parameterType="Card">
+    select
+    <include refid="Base_Column_List" />
+    from lwn_card
+    where remark2 = #{remark2,jdbcType=VARCHAR}
+  </select>
+
+
+
+  <!--根据时间查询全部-->
+  <select id="selectByTime" resultMap="BaseResultMap" parameterType="Card">
+    select
+    <include refid="Base_Column_List" />
+    from lwn_card
+    where
+    pay_time like "%"#{payTime,jdbcType=VARCHAR}"%" AND
+    mop like "%"#{mop,jdbcType=VARCHAR}"%"
+  </select>
+
+  <!--根据id删除-->
+  <delete id="deleteById" parameterType="Card" >
+    delete from lwn_card
+     where cart_id = #{cartId,jdbcType=INTEGER}
+  </delete>
+
+
+  <!--增加-->
+  <insert id="insert" parameterType="Card" >
+    insert into lwn_card
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="goodsId != null" >
+        goods_id,
+      </if>
+      <if test="goodsName != null" >
+        goods_name,
+      </if>
+
+      <if test="goodsType != null" >
+        goods_type,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+
+      <if test="goodsNumber != null" >
+        goods_number,
+      </if>
+      <if test="inventory != null" >
+        inventory,
+      </if>
+      <if test="menber != null" >
+        menber,
+      </if>
+      <if test="discount != null" >
+        discount,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+
+      <if test="remark2 != null" >
+        remark2,
+      </if>
+      <if test="payTime != null" >
+        pay_time,
+      </if>
+      <if test="mop != null" >
+        mop
+      </if>
+
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="goodsId != null" >
+        #{goodsId,jdbcType=INTEGER},
+      </if>
+      <if test="goodsName != null" >
+        #{goodsName,jdbcType=VARCHAR},
+      </if>
+
+      <if test="goodsType != null" >
+        #{goodsType,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DOUBLE},
+      </if>
+
+      <if test="goodsNumber != null" >
+        #{goodsNumber,jdbcType=INTEGER},
+      </if>
+      <if test="inventory != null" >
+        #{inventory,jdbcType=INTEGER},
+      </if>
+      <if test="menber != null" >
+        #{menber,jdbcType=VARCHAR},
+      </if>
+      <if test="discount != null" >
+        #{discount,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+
+      <if test="remark2 != null" >
+        #{remark2,jdbcType=VARCHAR},
+      </if>
+      <if test="payTime != null" >
+        #{payTime,jdbcType=VARCHAR},
+      </if>
+      <if test="mop != null" >
+        #{mop,jdbcType=VARCHAR}
+      </if>
+    </trim>
+  </insert>
+
+  <!--更新-->
+  <update id="updateById" parameterType="Card" >
+    update lwn_card
+    <set >
+      <if test="goodsId != null" >
+        goods_id = #{goodsId,jdbcType=INTEGER},
+      </if>
+      <if test="goodsName != null" >
+        goods_name = #{goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsNumber != null" >
+        goods_number = #{goodsNumber,jdbcType=INTEGER},
+      </if>
+      <if test="inventory != null" >
+        inventory = #{inventory,jdbcType=INTEGER},
+      </if>
+      <if test="menber != null" >
+        menber = #{menber,jdbcType=VARCHAR},
+      </if>
+      <if test="discount != null" >
+        discount = #{discount,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR}
+      </if>
+    </set>
+    where cart_id = #{cartId,jdbcType=INTEGER}
+  </update>
+
+
+</mapper>

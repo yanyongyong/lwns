@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nuesoft.lwn.dao.mapper.goods.GoodsTypeMapper" >
+  <resultMap id="BaseResultMap" type="GoodsType" >
+    <id column="type_id" property="typeId" jdbcType="INTEGER" />
+    <result column="parent_id" property="parentId" jdbcType="INTEGER" />
+    <result column="type_name" property="typeName" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="sort_order" property="sortOrder" jdbcType="INTEGER" />
+    <result column="is_parent" property="isParent" jdbcType="BIT" />
+    <result column="created" property="created" jdbcType="VARCHAR" />
+    <result column="updated" property="updated" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    type_id, parent_id, type_name, status, sort_order, is_parent, created, updated
+  </sql>
+
+  <!--根据id查询-->
+  <select id="selectByType" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from lwn_goods_type
+    where parent_id = #{parent_id,jdbcType=INTEGER}
+  </select>
+
+  <!--根据id删除类别-->
+  <delete id="deleteByTypeId" parameterType="java.lang.Integer" >
+    delete from lwn_goods_type
+    where type_id = #{typeId,jdbcType=INTEGER}
+  </delete>
+
+  <!--根据id编辑类别-->
+  <update id="updateByTypeId" parameterType="GoodsType" >
+
+
+    update lwn_goods_type
+    <set >
+      <if test="parentId != null" >
+        parent_id = #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="typeName != null" >
+        type_name = #{typeName,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="sortOrder != null" >
+        sort_order = #{sortOrder,jdbcType=INTEGER},
+      </if>
+      <if test="isParent != null" >
+        is_parent = #{isParent,jdbcType=BIT},
+      </if>
+      <if test="created != null" >
+        created = #{created,jdbcType=VARCHAR},
+      </if>
+      <if test="updated != null" >
+        updated = #{updated,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where type_id = #{typeId,jdbcType=INTEGER}
+  </update>
+
+</mapper>
